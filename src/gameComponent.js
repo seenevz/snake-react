@@ -1,12 +1,12 @@
 class GameComponent {
-  constructor(width, height, color, x, y, ctx) {
+  constructor(width, height, color, x, y, speedX = 0, speedY = -10, ctx) {
     this.color = color
     this.width = width
     this.height = height
     this.x = x
     this.y = y
-    this.speedX = -10
-    this.speedY = 0
+    this.speedX = speedX
+    this.speedY = speedY
     this.canvasCtx = ctx
   }
 
@@ -81,6 +81,22 @@ class GameComponent {
         break
       default:
         break;
+    }
+  }
+
+  checkColision = (colisionObj, callback) => {
+    const top = this.x
+    const bottom = this.x + this.height
+    const left = this.y
+    const right = this.y + this.width
+
+    const colObjTop = colisionObj.x
+    const colObjBottom = colisionObj.x + colisionObj.height
+    const colObjLeft = colisionObj.y
+    const colObjRight = colisionObj.y + colisionObj.width
+    debugger
+    if ((top > colObjBottom) || (bottom < colObjBottom) || (right < colObjLeft) || (left > colObjRight)) {
+      console.log('collision!')
     }
   }
 }

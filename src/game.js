@@ -4,7 +4,6 @@ import GameArea from "./gameArea";
 class SnakeGame {
   constructor(ctx) {
     this.canvasCtx = ctx;
-    // this.movementDirection = 'left'
     this.updateInterval = null
     this.directionStack = []
   }
@@ -13,7 +12,7 @@ class SnakeGame {
     this.gameArea = new GameArea(this.canvasCtx);
 
     this.snake = this.createSnake(10)
-    // debugger
+    this.food = this.createFood()
     this.updateInterval = setInterval(this.updateGame, 500);
   };
 
@@ -22,7 +21,6 @@ class SnakeGame {
   // check x and y speed and direction at time of changing direction
   updateGame = () => {
     this.gameArea.clear();
-    // debugger
     this.snake.forEach(snakeComponent => {
       if (this.directionStack.length > 0) {
         this.directionStack.forEach(direction => {
@@ -36,24 +34,27 @@ class SnakeGame {
       snakeComponent.newPos()
       snakeComponent.update()
     });
-    console.log(this.directionStack)
+    this.food.update()
+    // debugger
+    this.snake[0].checkColision(this.food)
   };
+
+  stopGame = () => {
+    clearInterval(this.updateInterval)
+  }
 
   createSnake = bodyLength => {
     let snake = [];
     for (let i = 0; i < bodyLength; i++) {
       const x = (this.canvasCtx.canvas.width / 2) + i * 10
-      const snakeComponent = new GameComponent(
-        10,
-        10,
-        "black",
-        x,
-        this.canvasCtx.canvas.height / 2,
-        this.canvasCtx
-      )
+      const snakeComponent = new GameComponent(10, 10, "black", x, this.canvasCtx.canvas.height / 2, -10, 0, this.canvasCtx)
       snake.push(snakeComponent)
     }
     return snake
+  }
+
+  createFood = () => {
+    return new GameComponent(10, 10, 'grey', Math.floor(Math.random() * 300), Math.floor(Math.random() * 300), 0, 0, this.canvasCtx)
   }
 
   pushDirection = (movementDirection) => {
