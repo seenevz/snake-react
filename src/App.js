@@ -17,7 +17,7 @@ class App extends React.Component {
   };
 
   startGame = () => {
-    if (this.state.game) {
+    if (!this.state.game) {
       const game = new SnakeGame(this.state.canvasCtx);
       this.setState({ game });
       game.startGame()
@@ -30,7 +30,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Canvas getCanvasContext={this.getCanvasContext} />
-        <ControlsContainer startGame={this.startGame} />
+        <ControlsContainer updateDirection={this.state.game ? this.state.game.pushDirection : null} isGameOn={!!this.state.game} startGame={this.startGame} />
       </div>
     );
   }

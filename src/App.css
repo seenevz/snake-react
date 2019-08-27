@@ -7,3 +7,7 @@ html body {
   text-align: center;
   /* line-height: 50; */
 }
+
+.Controls {
+z-index: 100
+}
