@@ -37,15 +37,15 @@ class SnakeGame {
       snakeComponent.update()
     });
 
-    // snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
-    this.checkFoodCollision()
+    this.checkSnakeCollision()
     this.food.update()
   };
 
-  checkFoodCollision = () => {
+  checkSnakeCollision = () => {
     const snakeHead = this.snake[0]
     const snakeBody = this.snake.slice(1)
 
+    snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
     snakeHead.checkCollision(this.food, () => { console.log('Collision!'); this.handleAddSnakeComponent() })
   }
 
@@ -101,8 +101,8 @@ class SnakeGame {
   }
 
   getGridPosition = (canvas) => {
-    const width = canvas.width
-    const height = canvas.height
+    const width = canvas.width - 10
+    const height = canvas.height - 10
 
     const x = Math.floor(Math.random() * width)
     const y = Math.floor(Math.random() * height)
@@ -138,9 +138,23 @@ class SnakeGame {
       direction: movementDirection,
       counter: 0
     }
-    if (((movementDirection === 'ArrowUp' || movementDirection === 'ArrowDown') && this.snake[0].speedY) || ((movementDirection === 'ArrowLeft' || movementDirection === 'ArrowRight') && this.snake[0].speedX)) {
-      return
+    const vDirectionArray = ['ArrowUp', 'w', 'ArrowDown', 's']
+    const hDirectionArray = ['ArrowLeft', 'a', 'ArrowRight', 'd']
+
+    if (this.snake[0].speedX !== 0) {
+      if (hDirectionArray.includes(movementDirection)) {
+        console.log('nope')
+        return
+      }
+    } else if (this.snake[0].speedY !== 0) {
+      if (vDirectionArray.includes(movementDirection)) {
+        console.log('nope')
+        return
+      }
     }
+    // if ((this.snake[0].speedY) || ((movementDirection === 'ArrowLeft' || movementDirection === 'ArrowRight') && this.snake[0].speedX)) {
+    //   return
+    // }
     this.directionStack.push(directionObj)
   }
 }

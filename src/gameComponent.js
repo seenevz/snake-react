@@ -22,11 +22,11 @@ class GameComponent {
   }
 
   checkBoundaries = () => {
-    if (this.x < 0 || this.x > this.canvasCtx.canvas.width) {
+    if (this.x < 0 || this.x > this.canvasCtx.canvas.width - 10) {
       this.x < 0
         ? this.x = this.canvasCtx.canvas.width
         : this.x = 0
-    } else if (this.y < 0 || this.y > this.canvasCtx.canvas.height) {
+    } else if (this.y < 0 || this.y > this.canvasCtx.canvas.height - 10) {
       this.y < 0
         ? this.y = this.canvasCtx.canvas.height
         : this.y = 0
@@ -66,17 +66,24 @@ class GameComponent {
   }
 
   changeDirection = direction => {
-    switch (direction) {
-      case 'ArrowLeft' || 'a':
+    const keys = {
+      up: ['ArrowUp', 'w'],
+      down: ['ArrowDown', 's'],
+      right: ['ArrowRight', 'd'],
+      left: ['ArrowLeft', 'a']
+    }
+
+    switch (true) {
+      case keys.left.includes(direction):
         this.moveLeft()
         break;
-      case 'ArrowRight' || 'd':
+      case keys.right.includes(direction):
         this.moveRight()
         break
-      case 'ArrowUp' || 'w':
+      case keys.up.includes(direction):
         this.moveUp()
         break
-      case 'ArrowDown' || 's':
+      case keys.down.includes(direction):
         this.moveDown()
         break
       default:
@@ -85,39 +92,8 @@ class GameComponent {
   }
 
   checkCollision = (collisionObj, callback) => {
-    const top = this.y
-    const bottom = (this.y + this.height)
-    const left = this.x
-    const right = (this.x + this.width)
-
-    const colObjTop = collisionObj.y
-    const colObjBottom = collisionObj.y + collisionObj.height
-    const colObjLeft = collisionObj.x
-    const colObjRight = collisionObj.x + collisionObj.width
-
     const relativeX = (this.x + this.width / 2) - (collisionObj.x + collisionObj.width / 2)
     const relativeY = (this.y + this.width / 2) - (collisionObj.y + collisionObj.width / 2)
-    // console.group('check collision')
-    // console.log('relative x: ', relativeX)
-    // console.log('relative y: ', relativeY)
-    // console.log('speedX: ', this.speedX)
-    // console.log('speedY: ', this.speedY)
-    // console.groupEnd()
-
-    //need to check if obj is positioned correctly before collision ie need to  check if when it collides it is going int othe right direction and position
-
-    // if (relativeY === 0) {
-
-    //   if ((right === colObjLeft && this.speedX > 0 && relativeX < 0) || (left === colObjRight && this.speedX < 0 && relativeX > 0) || (relativeX === 0 && relativeY === 0)) {
-    //     // debugger
-    //     callback()
-    //   }
-    // } else if (relativeX === 0) {
-    //   if ((top === colObjBottom && this.speedY < 0 && relativeY > 0) || (bottom === colObjTop && this.speedY > 0 && relativeY < 0) || (relativeX === 0 && relativeY === 0)) {
-    //     // debugger
-    //     callback()
-    //   }
-    // }
 
     if (relativeX === 0 && relativeY === 0) {
       callback()
