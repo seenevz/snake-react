@@ -6,7 +6,7 @@ class SnakeGame {
     this.canvasCtx = ctx;
     this.updateInterval = null
     this.directionStack = []
-    this.snakeSpeed = 200
+    this.snakeSpeed = 300
   }
 
   startGame = () => {
@@ -21,8 +21,6 @@ class SnakeGame {
   // Need to find a way to check if the direction and the position are matching
   // check x and y speed and direction at time of changing direction
   updateGame = () => {
-    const snakeHead = this.snake[0]
-    const snakeBody = this.snake.slice(1)
     this.gameArea.clear();
 
     this.snake.forEach(snakeComponent => {
@@ -39,13 +37,21 @@ class SnakeGame {
       snakeComponent.update()
     });
 
-    snakeHead.checkCollision(this.food, () => { console.log('Collision!'); this.handleAddSnakeComponent() })
     // snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
+    this.checkFoodCollision()
     this.food.update()
   };
 
+  checkFoodCollision = () => {
+    const snakeHead = this.snake[0]
+    const snakeBody = this.snake.slice(1)
+
+    snakeHead.checkCollision(this.food, () => { console.log('Collision!'); this.handleAddSnakeComponent() })
+  }
+
   reSpawnFood = () => {
     this.food = this.createFood()
+    console.log('new food piece: ', { x: this.food.x, y: this.food.y })
   }
 
   handleAddSnakeComponent = () => {
@@ -64,8 +70,20 @@ class SnakeGame {
 
     const snakeComponent = this.snakeComponent(x, y, speedX, speedY)
     this.snake.push(snakeComponent)
+
+    if (this.snake.length % 5 === 0) {
+      this.snakeSpeed -= 40
+      this.updateSnakeSpeed()
+    }
     console.log('snake size: ', this.snake.length)
+    console.log('snake speed: ', this.snakeSpeed)
+
     this.reSpawnFood()
+  }
+
+  updateSnakeSpeed = () => {
+    clearInterval(this.updateInterval)
+    this.updateInterval = setInterval(this.updateGame, this.snakeSpeed);
   }
 
   stopGame = () => {
