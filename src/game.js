@@ -74,6 +74,26 @@ class SnakeGame {
     return new GameComponent(10, 10, "black", x, y, speedX, speedY, this.canvasCtx)
   }
 
+  roundDozen = (n) => {
+    const rest = n % 10
+
+    return rest > 4 ? Math.ceil(n / 10) * 10 : Math.floor(n / 10) * 10
+  }
+
+  getGridPosition = (canvas) => {
+    const width = canvas.width
+    const height = canvas.height
+
+    const x = Math.floor(Math.random() * width)
+    const y = Math.floor(Math.random() * height)
+
+    return {
+      x: this.roundDozen(x),
+      y: this.roundDozen(y)
+    }
+
+  }
+
   createSnake = bodyLength => {
     let snake = [];
     for (let i = 0; i < bodyLength; i++) {
@@ -86,7 +106,9 @@ class SnakeGame {
   }
 
   createFood = () => {
-    return new GameComponent(10, 10, 'grey', Math.floor(Math.random() * 300), Math.floor(Math.random() * 300), 0, 0, this.canvasCtx)
+    const coords = this.getGridPosition(this.canvasCtx.canvas)
+
+    return new GameComponent(10, 10, 'grey', coords.x, coords.y, 0, 0, this.canvasCtx)
   }
 
   pushDirection = (movementDirection) => {

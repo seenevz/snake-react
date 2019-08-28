@@ -85,19 +85,17 @@ class GameComponent {
   }
 
   checkCollision = (collisionObj, callback) => {
-    const top = this.y
-    const bottom = this.y + this.height
-    const left = this.x
-    const right = this.x + this.width
+    const top = this.y - 1
+    const bottom = (this.y + this.height) - 1
+    const left = this.x - 1
+    const right = (this.x + this.width) - 1
 
     const colObjTop = collisionObj.y
     const colObjBottom = collisionObj.y + collisionObj.height
     const colObjLeft = collisionObj.x
     const colObjRight = collisionObj.x + collisionObj.width
 
-    // if (top === colObjBottom || bottom === colObjTop || right === colObjLeft || left === colObjRight) {
-    //   callback()
-    // }
+
 
     if ((top < colObjBottom && bottom > colObjBottom) || (bottom > colObjTop && top < colObjTop)) {
       if ((right > colObjLeft && this.speedX > 0) || (left < colObjRight && this.speedX < 0)) {
