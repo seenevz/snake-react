@@ -20,7 +20,10 @@ class SnakeGame {
   // Need to find a way to check if the direction and the position are matching
   // check x and y speed and direction at time of changing direction
   updateGame = () => {
+    const snakeHead = this.snake[0]
+    const snakeBody = this.snake.slice(1)
     this.gameArea.clear();
+
     this.snake.forEach(snakeComponent => {
       if (this.directionStack.length > 0) {
         this.directionStack.forEach(direction => {
@@ -34,20 +37,49 @@ class SnakeGame {
       snakeComponent.newPos()
       snakeComponent.update()
     });
+
+    snakeHead.checkCollision(this.food, () => { console.log('Collision!'); this.handleAddSnakeComponent() })
+    snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
     this.food.update()
-    // debugger
-    this.snake[0].checkColision(this.food)
   };
+
+  reSpawnFood = () => {
+    this.food = this.createFood()
+  }
+
+  handleAddSnakeComponent = () => {
+    const snakeTail = this.snake[this.snake.length - 1]
+    let x = snakeTail.x
+    let y = snakeTail.y
+
+    if (snakeTail.speedX !== 0) {
+      snakeTail.speedX > 0 ? x = snakeTail.x - 10 : x = snakeTail.x + 10
+    } else if (snakeTail.speedY !== 0) {
+      snakeTail.speedY > 0 ? y = snakeTail.y - 10 : y = snakeTail.y + 10
+    }
+
+    const speedX = snakeTail.speedX
+    const speedY = snakeTail.speedY
+
+    const snakeComponent = this.snakeComponent(x, y, speedX, speedY)
+    this.snake.push(snakeComponent)
+    this.reSpawnFood()
+  }
 
   stopGame = () => {
     clearInterval(this.updateInterval)
+  }
+
+  snakeComponent = (x, y, speedX, speedY) => {
+    return new GameComponent(10, 10, "black", x, y, speedX, speedY, this.canvasCtx)
   }
 
   createSnake = bodyLength => {
     let snake = [];
     for (let i = 0; i < bodyLength; i++) {
       const x = (this.canvasCtx.canvas.width / 2) + i * 10
-      const snakeComponent = new GameComponent(10, 10, "black", x, this.canvasCtx.canvas.height / 2, -10, 0, this.canvasCtx)
+      const y = this.canvasCtx.canvas.height / 2
+      const snakeComponent = this.snakeComponent(x, y, -10, 0)
       snake.push(snakeComponent)
     }
     return snake
@@ -67,7 +99,6 @@ class SnakeGame {
     if (((movementDirection === 'ArrowUp' || movementDirection === 'ArrowDown') && this.snake[0].speedY) || ((movementDirection === 'ArrowLeft' || movementDirection === 'ArrowRight') && this.snake[0].speedX)) {
       return
     }
-    console.log('Direction being pushed: ', directionObj)
     this.directionStack.push(directionObj)
   }
 }

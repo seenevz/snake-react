@@ -84,19 +84,32 @@ class GameComponent {
     }
   }
 
-  checkColision = (colisionObj, callback) => {
-    const top = this.x
-    const bottom = this.x + this.height
-    const left = this.y
-    const right = this.y + this.width
+  checkCollision = (collisionObj, callback) => {
+    const top = this.y
+    const bottom = this.y + this.height
+    const left = this.x
+    const right = this.x + this.width
 
-    const colObjTop = colisionObj.x
-    const colObjBottom = colisionObj.x + colisionObj.height
-    const colObjLeft = colisionObj.y
-    const colObjRight = colisionObj.y + colisionObj.width
-    debugger
-    if ((top > colObjBottom) || (bottom < colObjBottom) || (right < colObjLeft) || (left > colObjRight)) {
-      console.log('collision!')
+    const colObjTop = collisionObj.y
+    const colObjBottom = collisionObj.y + collisionObj.height
+    const colObjLeft = collisionObj.x
+    const colObjRight = collisionObj.x + collisionObj.width
+
+    // if (top === colObjBottom || bottom === colObjTop || right === colObjLeft || left === colObjRight) {
+    //   callback()
+    // }
+
+    if ((top < colObjBottom && bottom > colObjBottom) || (bottom > colObjTop && top < colObjTop)) {
+      if ((right > colObjLeft && this.speedX > 0) || (left < colObjRight && this.speedX < 0)) {
+
+        debugger
+        callback()
+      }
+    } else if ((right > colObjLeft && left < colObjLeft) || (left < colObjRight && right > colObjRight)) {
+      if ((top < colObjBottom && this.speedY > 0) || (bottom > colObjTop && this.speedY < 0)) {
+        debugger
+        callback()
+      }
     }
   }
 }
