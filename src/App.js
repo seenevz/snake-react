@@ -18,13 +18,17 @@ class App extends React.Component {
 
   startGame = () => {
     if (!this.state.game) {
-      const game = new SnakeGame(this.state.canvasCtx);
+      const game = new SnakeGame(this.state.canvasCtx, this.endGame);
       this.setState({ game });
       game.startGame()
     } else {
       return
     }
   };
+
+  endGame = () => {
+    this.setState({ game: null })
+  }
 
   render() {
     return (

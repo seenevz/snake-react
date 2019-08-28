@@ -2,11 +2,12 @@ import GameComponent from "./gameComponent";
 import GameArea from "./gameArea";
 
 class SnakeGame {
-  constructor(ctx) {
+  constructor(ctx, endCallback) {
     this.canvasCtx = ctx;
     this.updateInterval = null
     this.directionStack = []
-    this.snakeSpeed = 300
+    this.snakeSpeed = 250
+    this.endCallback = endCallback
   }
 
   startGame = () => {
@@ -41,6 +42,12 @@ class SnakeGame {
     this.food.update()
   };
 
+  updateSnakeFlash = () => {
+    this.gameArea.clear()
+    setTimeout(null, 500);
+    this.snake.forEach(snakeComponent => snakeComponent.update())
+  }
+
   checkSnakeCollision = () => {
     const snakeHead = this.snake[0]
     const snakeBody = this.snake.slice(1)
@@ -71,14 +78,28 @@ class SnakeGame {
     const snakeComponent = this.snakeComponent(x, y, speedX, speedY)
     this.snake.push(snakeComponent)
 
-    if (this.snake.length % 5 === 0) {
-      this.snakeSpeed -= 40
-      this.updateSnakeSpeed()
-    }
+    this.increaseSnakeSpeed()
     console.log('snake size: ', this.snake.length)
     console.log('snake speed: ', this.snakeSpeed)
 
     this.reSpawnFood()
+  }
+
+  increaseSnakeSpeed = () => {
+    if (this.snakeSpeed < 150) {
+      if (this.snake.length % 10 === 0) {
+        this.snakeSpeed -= 10
+      }
+    } else if (this.snakeSpeed < 200) {
+      if (this.snake.length % 5 === 0) {
+        this.snakeSpeed -= 20
+      }
+    } else {
+      if (this.snake.length % 5 === 0) {
+        this.snakeSpeed -= 60
+      }
+    }
+    this.updateSnakeSpeed()
   }
 
   updateSnakeSpeed = () => {
@@ -88,6 +109,8 @@ class SnakeGame {
 
   stopGame = () => {
     clearInterval(this.updateInterval)
+    this.updateSnakeFlash()
+    this.endCallback()
   }
 
   snakeComponent = (x, y, speedX, speedY) => {
@@ -152,9 +175,7 @@ class SnakeGame {
         return
       }
     }
-    // if ((this.snake[0].speedY) || ((movementDirection === 'ArrowLeft' || movementDirection === 'ArrowRight') && this.snake[0].speedX)) {
-    //   return
-    // }
+
     this.directionStack.push(directionObj)
   }
 }
