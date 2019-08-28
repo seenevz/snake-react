@@ -85,27 +85,27 @@ class GameComponent {
   }
 
   checkCollision = (collisionObj, callback) => {
-    const top = this.y - 1
-    const bottom = (this.y + this.height) - 1
-    const left = this.x - 1
-    const right = (this.x + this.width) - 1
+    const top = this.y
+    const bottom = (this.y + this.height)
+    const left = this.x
+    const right = (this.x + this.width)
 
     const colObjTop = collisionObj.y
     const colObjBottom = collisionObj.y + collisionObj.height
     const colObjLeft = collisionObj.x
     const colObjRight = collisionObj.x + collisionObj.width
 
+    //need to check if obj is positioned correctly before collision ie need to  check if when it collides it is going int othe right direction and position
 
+    if ((top === colObjTop && bottom === colObjBottom)) {
 
-    if ((top < colObjBottom && bottom > colObjBottom) || (bottom > colObjTop && top < colObjTop)) {
-      if ((right > colObjLeft && this.speedX > 0) || (left < colObjRight && this.speedX < 0)) {
-
-        debugger
+      if ((right > colObjLeft && this.speedX > 0 && left !== colObjRight) || (left < colObjRight && this.speedX < 0 && right !== colObjLeft)) {
+        // debugger
         callback()
       }
-    } else if ((right > colObjLeft && left < colObjLeft) || (left < colObjRight && right > colObjRight)) {
-      if ((top < colObjBottom && this.speedY > 0) || (bottom > colObjTop && this.speedY < 0)) {
-        debugger
+    } else if ((right === colObjRight && left === colObjLeft)) {
+      if ((top < colObjBottom && this.speedY < 0) || (bottom > colObjTop && this.speedY > 0)) {
+        // debugger
         callback()
       }
     }

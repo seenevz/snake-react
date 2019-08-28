@@ -8,6 +8,9 @@ html body {
   /* line-height: 50; */
 }
 
+canvas {
+  margin-top: 15vh;}
+
 .Controls {
 z-index: 100
 }

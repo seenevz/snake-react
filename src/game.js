@@ -6,6 +6,7 @@ class SnakeGame {
     this.canvasCtx = ctx;
     this.updateInterval = null
     this.directionStack = []
+    this.snakeSpeed = 200
   }
 
   startGame = () => {
@@ -13,7 +14,7 @@ class SnakeGame {
 
     this.snake = this.createSnake(10)
     this.food = this.createFood()
-    this.updateInterval = setInterval(this.updateGame, 500);
+    this.updateInterval = setInterval(this.updateGame, this.snakeSpeed);
   };
 
 
@@ -39,7 +40,7 @@ class SnakeGame {
     });
 
     snakeHead.checkCollision(this.food, () => { console.log('Collision!'); this.handleAddSnakeComponent() })
-    snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
+    // snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
     this.food.update()
   };
 
@@ -63,6 +64,7 @@ class SnakeGame {
 
     const snakeComponent = this.snakeComponent(x, y, speedX, speedY)
     this.snake.push(snakeComponent)
+    console.log('snake size: ', this.snake.length)
     this.reSpawnFood()
   }
 
