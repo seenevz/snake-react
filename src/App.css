@@ -8,7 +8,14 @@ html body {
   padding: 0;
   background: olive;
   font-family: "invasion2000";
+  box-sizing: border-box;
 }
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 .App {
   background: whitesmoke;
   margin: auto;
