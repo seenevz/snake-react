@@ -2,9 +2,10 @@ import React from "react";
 
 const ScoreComponent = props => {
   return (
-    <div>
+    <p>
       Score: <span>{props.score}</span>
-    </div>
+    </p>
+
   )
 }
 

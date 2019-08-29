@@ -1,18 +1,92 @@
+@font-face {
+  font-family: "invasion2000";
+  src: local("./invasion2000.ttf");
+}
+
 html body {
   overflow: hidden;
   padding: 0;
+  background: olive;
+  font-family: "invasion2000";
 }
 .App {
+  background: whitesmoke;
+  margin: auto;
+  width: 800px;
   height: 100vh;
-  text-align: center;
-  /* line-height: 50; */
+  display: flex;
+  flex-direction: column;
+  place-content: space-evenly;
+  align-items: center;
+  font-size: 26px;
+}
+
+header {
+  height: 15vh;
+  display: flex;
+  place-items: center;
 }
 
 canvas {
-  margin-top: 15vh;
-  border: "1px solid #000000";
+  max-width: 300px;
+  border: 2px solid #000000;
+  background: url(./bckg.jpg);
 }
 
-.Controls {
-z-index: 100
+.footDiv {
+  height: 20vh;
+}
+
+/* Button animation */
+
+@keyframes bounce {
+  20%,
+  53%,
+  80%,
+  0%,
+  100% {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -30px, 0);
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -15px, 0);
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -4px, 0);
+  }
+}
+.container {
+  text-align: center;
+  padding-top: 10%;
+}
+.button {
+  font-family: inherit;
+  background-color: #b45;
+  /* color: white; */
+  /* padding: 10px 40px; */
+  /* letter-spacing: 2px; */
+  text-transform: uppercase;
+  font-size: 22px;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+.bounce {
+  animation: bounce 2s infinite;
 }

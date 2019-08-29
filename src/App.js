@@ -4,6 +4,7 @@ import Canvas from "./Canvas";
 import ControlsContainer from "./controlsContainer";
 import SnakeGame from "./game";
 import Score from "./scoreComponent";
+import Title from "./titleComponent";
 
 class App extends React.Component {
   constructor() {
@@ -21,28 +22,40 @@ class App extends React.Component {
 
   startGame = () => {
     if (!this.state.game) {
-      const game = new SnakeGame(this.state.canvasCtx, this.updateScore, this.endGame);
+      const game = new SnakeGame(
+        this.state.canvasCtx,
+        this.updateScore,
+        this.endGame
+      );
       this.setState({ game });
-      game.startGame()
+      game.startGame();
     } else {
-      return
+      return;
     }
   };
 
-  updateScore = (gameScore) => {
-    this.setState({ gameScore })
-  }
+  updateScore = gameScore => {
+    this.setState({ gameScore });
+  };
 
   endGame = () => {
-    this.setState({ game: null })
-  }
+    this.setState({ game: null, gameScore: 0 });
+  };
 
   render() {
     return (
       <div className="App">
-        <Score score={this.state.gameScore} />
+        <header>
+          {this.state.game ? <Score score={this.state.gameScore} /> : <Title />}
+        </header>
         <Canvas getCanvasContext={this.getCanvasContext} />
-        <ControlsContainer updateDirection={this.state.game ? this.state.game.pushDirection : null} isGameOn={!!this.state.game} startGame={this.startGame} />
+        <ControlsContainer
+          updateDirection={
+            this.state.game ? this.state.game.pushDirection : null
+          }
+          isGameOn={!!this.state.game}
+          startGame={this.startGame}
+        />
       </div>
     );
   }

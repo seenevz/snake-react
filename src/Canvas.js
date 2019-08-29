@@ -1,4 +1,5 @@
 import React from "react";
+import src from "./bckg.jpg";
 
 class Canvas extends React.Component {
   constructor() {
@@ -11,13 +12,7 @@ class Canvas extends React.Component {
   }
 
   render() {
-    return (
-      <canvas
-        ref={this.canvasRef}
-        width="300"
-        height="300"
-      />
-    );
+    return <canvas ref={this.canvasRef} width="300" height="300" />;
   }
 }
 

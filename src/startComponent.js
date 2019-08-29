@@ -2,10 +2,10 @@ import React from "react";
 
 const StartComponent = props => {
   return (
-    <div>
-      <button onClick={props.startGame}>Start Game</button>
-    </div>
-  )
-}
+    <button className="button bounce" onClick={props.startGame}>
+      Start Game
+    </button>
+  );
+};
 
-export default StartComponent
+export default StartComponent;
