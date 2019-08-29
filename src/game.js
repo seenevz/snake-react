@@ -2,12 +2,14 @@ import GameComponent from "./gameComponent";
 import GameArea from "./gameArea";
 
 class SnakeGame {
-  constructor(ctx, endCallback) {
+  constructor(ctx, scoreCallback, endCallback) {
     this.canvasCtx = ctx;
     this.updateInterval = null
     this.directionStack = []
-    this.snakeSpeed = 250
+    this.snakeSpeed = 200
     this.endCallback = endCallback
+    this.scoreCallback = scoreCallback
+    this.gameScore = 0
   }
 
   startGame = () => {
@@ -26,12 +28,12 @@ class SnakeGame {
 
     this.snake.forEach(snakeComponent => {
       if (this.directionStack.length > 0) {
-        this.directionStack.forEach(direction => {
-          if (snakeComponent.x === direction.x && snakeComponent.y === direction.y) {
-            snakeComponent.changeDirection(direction.direction);
-            ++direction.counter
+        this.directionStack.forEach(directionObj => {
+          if (snakeComponent.x === directionObj.x && snakeComponent.y === directionObj.y) {
+            snakeComponent.changeDirection(directionObj.direction);
+            ++directionObj.counter
           }
-          if (direction.counter === this.snake.length) { this.directionStack.shift() }
+          if (directionObj.counter === this.snake.length) { this.directionStack.shift() }
         })
       }
       snakeComponent.newPos()
@@ -53,7 +55,13 @@ class SnakeGame {
     const snakeBody = this.snake.slice(1)
 
     snakeBody.forEach(snakeComponent => snakeHead.checkCollision(snakeComponent, this.stopGame))
-    snakeHead.checkCollision(this.food, () => { console.log('Collision!'); this.handleAddSnakeComponent() })
+    snakeHead.checkCollision(this.food, () => {
+      console.log('Collision!');
+      this.gameScore += 2
+      this.scoreCallback(this.gameScore)
+      this.handleAddSnakeComponent()
+    })
+
   }
 
   reSpawnFood = () => {

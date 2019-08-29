@@ -9,7 +9,9 @@ html body {
 }
 
 canvas {
-  margin-top: 15vh;}
+  margin-top: 15vh;
+  border: "1px solid #000000";
+}
 
 .Controls {
 z-index: 100

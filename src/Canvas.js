@@ -16,8 +16,6 @@ class Canvas extends React.Component {
         ref={this.canvasRef}
         width="300"
         height="300"
-        style={{ border: "1px solid #000000" }}
-      // onClick={e => alert(`x: ${e.clientX}, y: ${e.clientY}`)}
       />
     );
   }

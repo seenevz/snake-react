@@ -11,12 +11,16 @@ class ControlersComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.divRef.focus()
+    document.addEventListener('keydown', this.handleKeyPress)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress)
   }
 
   render() {
     return (
-      <div tabIndex='0' ref={ref => this.divRef = ref} onKeyDown={this.handleKeyPress.bind(this)}>
+      <div onKeyDown={this.handleKeyPress.bind(this)}>
         Use W S A D or  ← ↑ ↓ →
       </div>
     )
