@@ -1,5 +1,4 @@
 import React from "react";
-import src from "./bckg.jpg";
 
 class Canvas extends React.Component {
   constructor() {
